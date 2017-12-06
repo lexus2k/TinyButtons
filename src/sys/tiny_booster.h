@@ -22,7 +22,7 @@
  */
 #pragma once
 
-#include <arduino.h>
+#include <Arduino.h>
 
 const int16_t ADC_IN_PROGRESS   =   -1;
 
@@ -85,6 +85,14 @@ static inline void digitalWrite(uint8_t pin, uint8_t level)
  * @note if function returns ADC_IN_PROGRESS, just call it once again when you're ready.
  */
 int analogRead(uint8_t pin);
+
+/**
+ * Returns time passed since system start in milliseconds
+ */
+static uint32_t millis()
+{
+    return ::millis();
+}
 
 #elif (defined(__AVR_ATtiny25__) || \
      defined(__AVR_ATtiny45__) || \
@@ -203,6 +211,14 @@ static inline void digitalWrite(uint8_t pin, uint8_t level)
 static inline int analogRead(uint8_t pin)
 {
     return ::analogRead(pin);
+}
+
+/**
+ * Returns time passed since system start in milliseconds
+ */
+static uint32_t millis()
+{
+    return ::millis();
 }
 
 #endif

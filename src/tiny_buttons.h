@@ -20,7 +20,6 @@
 #pragma once
 
 #include <stdint.h>
-#include <Arduino.h>
 
 /**
  * TOnButtonEvent defines format of callback functions used by TinyAnalogButtons class
@@ -61,7 +60,7 @@ public:
     /**
      * Initializes state of the object. Must be called in setup() function.
      */
-    void init                          (void)     { pinMode(m_pin, INPUT); };
+    void init();
 
     /**
      * Returns true if button is being up, and press duration is below 300 milliseconds
