@@ -21,6 +21,8 @@
 
 #include <stdint.h>
 
+#define TINY_BUTTON_SHORT_PRESS_MS    400
+
 /**
  * TOnButtonEvent defines format of callback functions used by TinyAnalogButtons class
  * @param id           - id of the pressed button
@@ -33,7 +35,7 @@
 typedef void (*TOnButtonEvent)(uint8_t id, uint16_t timeDeltaMs);
 
 #ifndef ANALOG_BUTTONS_THRESHOLD
-    #define ANALOG_BUTTONS_THRESHOLD  30
+    #define ANALOG_BUTTONS_THRESHOLD  40
 #endif
 
 /**
@@ -67,13 +69,13 @@ public:
      * @param n - button id to check
      * @return true or false
      */
-    inline bool isShortPress           (uint8_t n)   { return isShortPress(n, 300); };
+    inline bool isShortPress           (uint8_t n)   { return isShortPress(n, TINY_BUTTON_SHORT_PRESS_MS); };
 
     /**
      * Returns true if any button or their combination is pressed.
      * @returns true or false
      */
-    inline bool isShortPress           ()         { return (m_isButtonDown == false) && (m_wasButtonDown == true) && holdDuration() < 300; };
+    inline bool isShortPress           ()         { return (m_isButtonDown == false) && (m_wasButtonDown == true) && holdDuration() < TINY_BUTTON_SHORT_PRESS_MS; };
 
     /**
      * Returns true if button is being up, and press duration is no longer than duration value
@@ -126,7 +128,9 @@ public:
     /**
      * Returns true if button is being down
      */
-    inline bool isButtonDown           (uint8_t n)   { return (m_id == n) && (m_isButtonDown == true) && (m_wasButtonDown == false); };
+    inline bool isButtonDown           (uint8_t n)   { return (m_id == n) && (m_isButtonDown == true); };
+
+    inline bool isButtonDown           ()            { return m_isButtonDown; };
 
     /**
      * Returns true if button is being up
@@ -188,6 +192,8 @@ public:
      * @param[in] handler - callback handler of TOnButtonEvent type
      */
     void onButtonHold(TOnButtonEvent handler)   { m_holdHandler   = handler; };
+
+    uint8_t getButtonId() { return m_id; };
     
 private:
     uint8_t  m_id                       = 0xFF;

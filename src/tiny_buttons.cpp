@@ -20,11 +20,10 @@
 #include "tiny_buttons.h"
 #include "sys/tiny_booster.h"
 
-#define BUTTONS_THRESHOLD         30 /// in sample units 0 - 1024
-#define BUTTONS_SAMPLING_PERIOD   40 /// period in milliseconds
-#define DEBOUNCE_SAMPLING_PERIOD  5 /// period in milliseconds
-#define DEBOUNCE_CYCLES           4  /// 4*5 = 20 milliseconds
-#define MIN_DELAY_AFTER_UP        150/// minimum delay before the button can be pressed again
+#define BUTTONS_SAMPLING_PERIOD   20 /// period in milliseconds
+#define DEBOUNCE_SAMPLING_PERIOD  5  /// period in milliseconds
+#define DEBOUNCE_CYCLES           3  /// 3*5 = 15 milliseconds
+#define MIN_DELAY_AFTER_UP        50 /// minimum delay before the button can be pressed again
 #define MAX_WAIT_DOUBLE_PRESS_TIMEOUT  \
                                   300
 
@@ -74,7 +73,8 @@ void TinyAnalogButtons::update()
         if (found && ((uint16_t)TinyOs::millis() - m_upTimestampMs >= MIN_DELAY_AFTER_UP))
         {
             // Change only, if new button is pressed and no much time passed since last hit
-            if (((m_id != n) && ((uint16_t)TinyOs::millis() - m_downTimestampMs < MAX_WAIT_DOUBLE_PRESS_TIMEOUT)) ||
+            if ( ((m_id != n) && ((uint16_t)TinyOs::millis() - m_downTimestampMs < MAX_WAIT_DOUBLE_PRESS_TIMEOUT))
+                ||
                 // or if button is being pressed
                 (m_isButtonDown == false))
             {
