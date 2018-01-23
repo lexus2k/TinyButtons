@@ -166,6 +166,8 @@ public:
         return ((m_id == n) && (m_isButtonDown == true) && (m_disableAction == false)) ? (ts - m_downTimestampMs) : 0;
     };
 
+    inline void reset() { m_isButtonDown = false; m_wasButtonDown = false; };
+
     /**
      * Updates state of Buttons class, must be called in the cycle each time.
      */
